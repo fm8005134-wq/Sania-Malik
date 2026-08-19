@@ -1,60 +1,30 @@
-name: Build APK
+[app]
+title = Sania Malik
+package.name = saniamalik
+package.domain = com.fahadali
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
+version = 4.4
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+requirements = python3,kivy==2.2.1
 
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+orientation = portrait
+fullscreen = 0
 
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,WAKE_LOCK,RECORD_AUDIO,CAMERA
 
-      - name: Cache Buildozer
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.buildozer
-            ~/.gradle
-          key: buildozer-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
-          restore-keys: |
-            buildozer-${{ runner.os }}-
+android.api = 33
+android.minapi = 21
+android.ndk = 25b
+android.archs = arm64-v8a
 
-      - name: Install Python Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel
-          pip install buildozer==1.5.0 cython
+android.accept_sdk_license = True
+android.allow_backup = True
 
-      - name: Prepare Android Environment
-        run: |
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
+p4a.bootstrap = sdl2
 
-      - name: Build APK
-        env:
-          ANDROID_ACCEPT_LICENSES: "y"
-        run: |
-          buildozer -v android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: SaniaMalik-APK
-          path: bin/*.apk
-          if-no-files-found: error
+[buildozer]
+log_level = 2
+warn_on_root = 1
