@@ -38,7 +38,14 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install buildozer cython
 
+      - name: Accept Android SDK Licenses
+        run: |
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+
       - name: Build APK
+        env:
+          ANDROID_ACCEPT_LICENSES: "y"
         run: |
           buildozer android debug
 
