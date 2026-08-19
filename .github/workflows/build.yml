@@ -1,45 +1,28 @@
-name: Build Sania APK
+name: Build Android APK
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Build APK with Buildozer
+        uses: artem-sytnyk/buildozer-action@v1
         with:
-          python-version: '3.11'
+          command: buildozer android release
 
-      - name: Cache buildozer
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.buildozer
-            ~/.gradle
-          key: buildozer-${{ hashFiles('buildozer.spec') }}
-
-      - name: Install deps
-        run: |
-          pip install buildozer cython
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq --no-install-recommends \
-            build-essential git libffi-dev libssl-dev \
-            zlib1g-dev libncurses5-dev cmake \
-            openjdk-17-jdk-headless autoconf libtool \
-            pkg-config zip unzip
-
-      - name: Build APK
-        run: buildozer android debug
-
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sania-apk
+          name: SaniaMalik-APK
           path: bin/*.apk
-          retention-days: 30
+          if-no-files-found: error
