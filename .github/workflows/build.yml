@@ -5,24 +5,24 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer
-        uses: artem-sytnyk/buildozer-action@v1
+      - name: Build APK
+        id: buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
         with:
-          command: buildozer android release
+          command: buildozer android debug
+          buildozer_version: stable
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SaniaMalik-APK
-          path: bin/*.apk
-          if-no-files-found: error
+          path: ${{ steps.buildozer.outputs.filename }}
