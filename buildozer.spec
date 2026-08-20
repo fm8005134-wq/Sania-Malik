@@ -11,6 +11,8 @@ version = 4.4
 
 requirements = python3,kivy==2.2.1
 
+p4a.branch = v2024.01.21
+
 orientation = portrait
 fullscreen = 0
 
