@@ -18,12 +18,12 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
 
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -31,7 +31,7 @@ jobs:
           pip install buildozer==1.5.0
           pip install cython==0.29.36
 
-      - name: Prepare Android
+      - name: Android Config
         run: |
           mkdir -p ~/.android
           touch ~/.android/repositories.cfg
@@ -40,6 +40,7 @@ jobs:
         env:
           ANDROID_ACCEPT_LICENSES: "y"
         run: |
+          buildozer android clean
           buildozer -v android debug
 
       - name: Upload APK
