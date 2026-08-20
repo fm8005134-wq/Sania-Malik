@@ -12,23 +12,17 @@ version = 4.4
 requirements = python3,kivy==2.2.1
 
 orientation = portrait
-
 fullscreen = 0
 
 android.permissions = INTERNET
 
-android.api = 33
+android.api = 27
 android.minapi = 21
-
 android.ndk = 25b
-
 android.archs = arm64-v8a
-
-android.accept_sdk_license = True
 
 p4a.bootstrap = sdl2
 
-# Faster build
 android.skip_update = False
 
 [buildozer]
